@@ -1,0 +1,8 @@
+.Header {
+  display: flex;
+}
+
+.redditLogo {
+  height: 10vh;
+  margin-right: 50px;
+}
