@@ -4,5 +4,12 @@
 }
 
 .searchButton {
-  margin-left: 5px;
+  margin-left: 2vw;
+  height: 3vh;
+}
+
+input {
+  border-radius: 5%;
+  height: 3vh;
+  width: 40vw;
 }

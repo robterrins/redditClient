@@ -22,8 +22,13 @@ export default function Feed () {
   }, [subreddit]);
 
   return (
-    <div className="feed">
-      {(posts != null) ? posts.map((post, index) => <Post key={index} post={post.data}/>) : ''}
+    <div>
+      <h2 className="subredditName">r/{subreddit}</h2>
+      <div className="feed">
+        <div classname="posts">
+          {(posts != null) ? posts.map((post, index) => <Post key={index} post={post.data}/>) : ''}
+        </div>
+      </div>
     </div>
   )
 }

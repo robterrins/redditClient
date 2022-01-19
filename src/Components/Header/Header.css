@@ -5,4 +5,5 @@
 .redditLogo {
   height: 10vh;
   margin-right: 50px;
+  align-self: flex-start;
 }

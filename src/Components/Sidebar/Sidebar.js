@@ -1,8 +1,9 @@
 import react from 'react'
+import './Sidebar.css'
 
 export default function Sidebar () {
 
   return (
-    <div>This is a sidebar</div>
+    <div className="sidebar">This is a sidebar</div>
   )
 }
