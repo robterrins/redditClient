@@ -1,9 +1,21 @@
-import {createSlice} from "@reactjs/toolkit"
+import {createSlice} from "@reduxjs/toolkit"
 
-const searchbarSlice = createSlice({
-  name: "searchbarSlice",
-  initialState: "",
+const initialState = {
+  searchTerm: "",
+}
+
+export const searchBarSlice = createSlice({
+  name: "searchBarSlice",
+  initialState,
   reducers: {
-    
-  }
+    setSearchTerm(state, action){
+      state.searchTerm = action.payload
+    },
+  },
 })
+
+export const {
+  setSearchTerm,
+} = searchBarSlice.actions;
+
+export default searchBarSlice.reducer;

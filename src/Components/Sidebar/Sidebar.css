@@ -1,8 +1,8 @@
 .sidebar {
   background-color: lightgray;
   float: right;
-  width: 25vw;
-  margin-right: 5vw;
+  width: 20vw;
+  margin-right: 15vw;
   min-height: 80vh;
   box-sizing: border-box;
   box-shadow: 2px 2px 2px 2px lightgrey;

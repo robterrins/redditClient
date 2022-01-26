@@ -1,5 +1,11 @@
 .post {
-  background-color: green;
+  background-color: lightgrey;
   min-height: 20vh;
   min-width: 30vw;
+  margin: 2vw;
+  box-shadow: 2px 2px 2px 2px black;
+}
+
+img {
+  margin: 1vh;
 }

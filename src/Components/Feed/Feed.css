@@ -2,9 +2,9 @@
   margin: 0;
   background-color: #282c48;
   color: white;
-  width: 60vw;
+  width: 40vw;
   min-height: 80vh;
-  margin-left: 5vw;
+  margin-left: 20vw;
   float: left;
   box-shadow: 2px 2px 2px 2px lightgrey;
 }

@@ -6,8 +6,6 @@ import SearchBar from '../SearchBar/SearchBar.js'
 import redditLogo from './Reddit-Logo-700x394.png'
 
 export default function Header () {
-
-
   const [searchTerm, setSearchTerm] = useState("")
 
   return (
@@ -15,8 +13,6 @@ export default function Header () {
       <img src={redditLogo} className="redditLogo"/>
       <SearchBar />
     </div>
-
-
   )
 }
 
