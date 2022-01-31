@@ -18,7 +18,6 @@ export default function SearchBar () {
     setFeed(searchTermInput);
   }, [getSearchTermState]);
 
-
   const onSearchTermSubmit = (e) => {
     e.preventDefault();
     dispatch(setFeed(searchTermInput))

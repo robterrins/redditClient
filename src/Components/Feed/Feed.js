@@ -1,35 +1,48 @@
 import React, {useState, useEffect} from 'react';
-
 import {useDispatch, useSelector} from 'react-redux';
-
 
 import './Feed.css';
 import Post from '../Post/Post.js';
 
-export default function Feed () {
+import {addFavouriteSubreddit} from '../Sidebar/SidebarSlice.js'
 
-  const getFeed = useSelector((state) => state.feed.subreddit);
-  const [posts, setPosts] = useState([])
-  // const [subreddit, setSubreddit] = useState(['pics'])
+export default function Feed () {
+  const dispatch = useDispatch();
+  const currentFeed = useSelector((state) => state.feed.subreddit);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch(`https://www.reddit.com/r/${getFeed}.json`).then(res => {
+    fetch(`https://www.reddit.com/r/${currentFeed}.json`).then(res => {
       if(res.status!=200){
         console.log(`${res.status} error!`)
         return;
       }
       res.json().then(data => {
         if(data!=null){
-          console.log(data)
+          console.log(data);
           setPosts(data.data.children);
         }
       });
     })
-  }, [getFeed]);
+  }, [currentFeed]);
+
+  const getSubredditList = useSelector((state) => state.sidebar.favouriteSubreddits);
+
+  const onFavouriteClick = (e) => {
+    e.preventDefault();
+    if(getSubredditList.includes(currentFeed)){
+      return
+    } else {
+      dispatch(addFavouriteSubreddit(currentFeed));
+    }
+  }
 
   return (
     <div>
-      <h2 className="subredditName">r/{getFeed}</h2>
+      <div>
+        <h2 className="subredditName">r/{currentFeed}</h2>
+        <button type="button" onClick={onFavouriteClick}>Favourite</button>
+      </div>
       <div className="feed">
         <div className="posts">
           {(posts != null) ? posts.map((post, index) => <Post key={index} post={post.data} />) : ''}
