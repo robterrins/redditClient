@@ -1,11 +1,25 @@
 .post {
   background-color: lightgrey;
-  min-height: 20vh;
   min-width: 30vw;
   margin: 2vw;
   box-shadow: 2px 2px 2px 2px black;
+  padding: 2rem;
+}
+
+.postScore {
+  float: left;
+  height: 100%;
 }
 
 img {
-  margin: 1vh;
+  max-width: 90%;
+}
+
+.author {
+  float: left;
+  color: blue;
+}
+
+h3 {
+  margin: 1.5rem;
 }

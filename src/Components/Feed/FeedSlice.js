@@ -1,21 +1,30 @@
-import {createSlice} from '@reduxjs/toolkit'
+import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  subreddit: 'pics'
+  posts: [],
+  subreddit: 'pics',
 }
 
 export const feedSlice = createSlice({
   name: 'feedSlice',
   initialState,
   reducers: {
-    setFeed(state, action) {
+    setPosts(state,action){
+      state.posts = action.payload;
+    },
+    setSubreddit(state, action) {
       state.subreddit = action.payload;
     },
+    getComments(state,action){
+      state.posts[action.payload.index].comments = action.payload.comments;
+    }
   },
 })
 
 export const {
-  setFeed,
+  setPosts,
+  setSubreddit,
+  getComments,
 } = feedSlice.actions;
 
 export default feedSlice.reducer;

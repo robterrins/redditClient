@@ -1,10 +1,13 @@
+.feedContainer {
+  padding: 2rem;
+}
+
 .feed{
   margin: 0;
   background-color: #282c48;
   color: white;
-  width: 40vw;
+  width: 70vw;
   min-height: 80vh;
-  margin-left: 20vw;
   float: left;
   box-shadow: 2px 2px 2px 2px lightgrey;
 }
@@ -17,4 +20,42 @@
   background-color: skyblue;
   font-size: 50px;
   color: white;
+}
+
+button {
+  cursor: pointer;
+}
+
+h3 {
+  color: black;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  text-decoration: none;
+  list-style: none;
+}
+
+/* 320px — 480px: Mobile devices
+481px — 768px: iPads, Tablets
+769px — 1024px: Small screens, laptops */
+
+@media (max-width: 1024px) {
+
+}
+
+@media (max-width: 768px) {
+  .feed {
+    margin: 0;
+    background-color: #282c48;
+    color: white;
+    width: 80vw;
+    min-height: 80vh;
+    margin-left: 10vw;
+    float: left;
+    box-shadow: 2px 2px 2px 2px lightgrey;
+  }
 }

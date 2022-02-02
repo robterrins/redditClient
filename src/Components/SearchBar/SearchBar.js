@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {setSearchTerm} from './SearchBarSlice.js'
-import {setFeed} from '../Feed/FeedSlice.js';
+import {setSubreddit} from '../Feed/FeedSlice.js';
 import './SearchBar.css';
 
 export default function SearchBar () {
@@ -15,12 +15,12 @@ export default function SearchBar () {
   }
 
   useEffect(() => {
-    setFeed(searchTermInput);
+    setSubreddit(searchTermInput);
   }, [getSearchTermState]);
 
   const onSearchTermSubmit = (e) => {
     e.preventDefault();
-    dispatch(setFeed(searchTermInput))
+    dispatch(setSubreddit(searchTermInput))
   }
 
   return (

@@ -9,7 +9,7 @@ export default function Sidebar () {
 
   return (
     <div className="sidebar">
-      Favourite Subreddits:
+      <h3>Favourite Subreddits:</h3>
       <div className='subreddits'>
         {getFavouriteSubreddits.map((subreddit, index) => <li key={index}><a>r/{subreddit}</a> <button>X</button></li>)}
       </div>
