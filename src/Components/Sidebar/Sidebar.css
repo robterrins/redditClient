@@ -5,8 +5,15 @@
   min-height: 80vh;
   box-sizing: border-box;
   box-shadow: 2px 2px 2px 2px lightgrey;
+  margin: 1rem 2rem 1rem 0;
 }
 
 li {
   margin: 1rem;
+}
+
+.removeFav {
+  /* border: none; */
+  background-color: transparent;
+  font-weight: bold;
 }

@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {getComments} from '../Feed/FeedSlice.js'
 
 import './Feed.css';
 import Post from '../Post/Post.js';
@@ -42,19 +43,43 @@ export default function Feed () {
     }
   }
 
+  const populateComments = (index) => {
+    const comments = (permalink) => {
+      dispatch(fetchComments(index, permalink));
+    }
+  }
+
+  const getPostComments = async (permalink) => {
+    const response = await fetch(`https://www.reddit.com/${permalink}.json`);
+    const json = await response.json();
+    console.log(json)
+    return Array.from(json[1].data.children.map((comment) => comment.data),);
+  };
+
+  const fetchComments = (index, permalink) => async (dispatch) => {
+    try {
+      const comments = await getPostComments(permalink);
+      dispatch(getComments({ index, comments }));
+    } catch (error) {
+      console.log(error);
+      return;
+    };
+  };
+
   return (
     <div>
+
       <div>
         <h2 className="subredditName">r/{currentSubreddit}</h2>
         <button type="button" onClick={onFavouriteClick}>Favourite</button>
       </div>
-      <div className="feedContainer">
+
         <div className="feed">
           <div className="posts">
-            {(posts != null) ? posts.map((post, index) => <Post key={index} post={post.data}/>) : ''}
+            {(posts != null) ? posts.map((post, index) => <Post key={index} id={index} post={post.data} populateComments={populateComments(index)}/>) : ''}
           </div>
         </div>
-      </div>
+
     </div>
   )
 }

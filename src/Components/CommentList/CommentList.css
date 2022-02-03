@@ -1,0 +1,11 @@
+.commentListContainer {
+  position: fixed;
+  z-index: 1;
+  left: 5rem;
+  top: 5rem;
+  width: calc(100vw - 10rem);
+  background-color: black;
+  opacity: 0.01;
+  max-height: 100%;
+  overflow-y: auto;
+}

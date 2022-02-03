@@ -1,12 +1,8 @@
-.feedContainer {
-  padding: 2rem;
-}
-
 .feed{
-  margin: 0;
+  margin: 1rem 0 1rem 2rem;
   background-color: #282c48;
   color: white;
-  width: 70vw;
+  width: 65vw;
   min-height: 80vh;
   float: left;
   box-shadow: 2px 2px 2px 2px lightgrey;
