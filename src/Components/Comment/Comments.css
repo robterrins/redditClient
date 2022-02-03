@@ -9,3 +9,9 @@
   max-height: 100%;
   overflow-y: auto;
 }
+
+
+.comment {
+  color: blue;
+  width: 100%;
+}

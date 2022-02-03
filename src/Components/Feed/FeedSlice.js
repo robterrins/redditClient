@@ -16,7 +16,7 @@ export const feedSlice = createSlice({
     setSubreddit(state, action) {
       state.subreddit = action.payload;
     },
-    getComments(state,action){
+    getComments(state, action) {
       state.posts[action.payload.index].comments = action.payload.comments;
     },
     showComments(state, action){

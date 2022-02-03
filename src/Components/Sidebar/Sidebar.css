@@ -1,8 +1,9 @@
 .sidebar {
-  background-color: aquamarine;
+  background-color: lightgrey;
   float: right;
   padding: 1rem;
   min-height: 80vh;
+  width: 25%;
   box-sizing: border-box;
   box-shadow: 2px 2px 2px 2px lightgrey;
   margin: 1rem 2rem 1rem 0;

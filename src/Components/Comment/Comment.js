@@ -1,11 +1,11 @@
 import {useDispatch, useSelector} from 'react-redux'
-import './CommentList.css'
+import './Comments.css'
 
-export const Comment = (props) => {
+export function Comment(props){
 
   return(
     <div className="comment">
-      comment{props.id}
+      {props.id}
     </div>
   )
 }

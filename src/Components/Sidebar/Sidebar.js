@@ -18,6 +18,7 @@ export default function Sidebar () {
   return (
     <div className="sidebar">
       <h3>Favourite Subreddits:</h3>
+      <hr></hr>
       <div className='subreddits'>
         {getFavouriteSubreddits.map((subreddit, index) => <li key={index}><a>r/{subreddit}</a> <button type="button" id={subreddit} className="removeFav" onClick={onFavRemoveClick}>X</button></li>)}
       </div>

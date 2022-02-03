@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {getComments} from '../Feed/FeedSlice.js'
+import {showComments, getComments} from './FeedSlice.js'
 
 import './Feed.css';
 import Post from '../Post/Post.js';
 
 import {addFavouriteSubreddit} from '../Sidebar/SidebarSlice.js'
 import {setPosts} from "./FeedSlice.js"
-import {generateFeed} from "./FeedSlice.js"
 
 export default function Feed () {
   const dispatch = useDispatch();
@@ -23,7 +22,6 @@ export default function Feed () {
       }
       res.json().then(data => {
         if(data!=null){
-          console.log(data);
           dispatch(setPosts(data.data.children));
         }
       });
@@ -43,27 +41,29 @@ export default function Feed () {
     }
   }
 
-  const populateComments = (index) => {
-    const comments = (permalink) => {
-      dispatch(fetchComments(index, permalink));
-    }
-  }
-
   const getPostComments = async (permalink) => {
     const response = await fetch(`https://www.reddit.com/${permalink}.json`);
     const json = await response.json();
-    console.log(json)
-    return Array.from(json[1].data.children.map((comment) => comment.data),);
+
+    dispatch(showComments(true));
+    console.log(json[1].data.children.map((comment) => comment.data))
+    return json[1].data.children.map((subreddit) => subreddit.data);
   };
 
   const fetchComments = (index, permalink) => async (dispatch) => {
     try {
       const comments = await getPostComments(permalink);
-      dispatch(getComments({ index, comments }));
-    } catch (error) {
+      dispatch(getComments({index, comments}));
+    } catch (error){
       console.log(error);
-      return;
+    }
+  }
+
+  const populateComments = (index) => {
+    const getComments = (permalink) => {
+      dispatch(fetchComments(index, permalink));
     };
+    return getComments;
   };
 
   return (
