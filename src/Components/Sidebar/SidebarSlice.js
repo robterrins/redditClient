@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
   favouriteSubreddits: ['soccer', 'fantasypl', 'chess'],
 }
-
+// [{ name: 'soccer', icon: "" }, { name: 'fantasypl', icon: "" }, { name: 'chess', icon: "" }],
 export const sidebarSlice = createSlice({
   name: 'sidebarSlice',
   initialState,

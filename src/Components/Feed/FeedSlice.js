@@ -1,9 +1,10 @@
 import {createSlice} from '@reduxjs/toolkit';
+import { getSubredditPosts, getPostComments } from '../../API/reddit.js';
 
 const initialState = {
   posts: [],
   subreddit: 'pics',
-  showComments: false,
+  icon: '"https://b.thumbs.redditmedia.com/VZX_KQLnI1DPhlEZ07bIcLzwR1Win808RIt7zm49VIQ.png'
 }
 
 export const feedSlice = createSlice({
@@ -16,24 +17,25 @@ export const feedSlice = createSlice({
     setSubreddit(state, action) {
       state.subreddit = action.payload;
     },
-    getComments(state, action) {
+    setIcon(state, action) {
+      state.icon = action.payload
+    },
+    setComments(state, action) {
       state.posts[action.payload.index].comments = action.payload.comments;
     },
-    showComments(state, action){
-      if(state.showComments){
-        state.showComments = false;
-      } else {
-        state.showComments = action.payload;
-      }
-    }
+    toggleShowingComments(state, action) {
+      state.posts[action.payload].showingComments = !state.posts[action.payload]
+        .showingComments;
+    },
   },
 })
 
 export const {
   setPosts,
   setSubreddit,
-  getComments,
-  showComments,
+  setIcon,
+  setComments,
+  toggleShowingComments
 } = feedSlice.actions;
 
 export default feedSlice.reducer;

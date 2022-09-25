@@ -1,61 +1,76 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Post.css';
-import {CommentList} from '../Comment/CommentList.js'
-import {useDispatch, useSelector} from 'react-redux'
-import {showComments, getComments} from '../Feed/FeedSlice.js'
-import {useState} from 'react'
+import { CommentList } from '../Comment/CommentList.js'
+import { useDispatch, useSelector } from 'react-redux'
+import { setComments, toggleShowingComments } from '../Feed/FeedSlice.js'
+import { convertTimeStamp } from '../../utils/convertTimeStamp.js'
 
-import {Comment} from '../Comment/Comment.js'
+import { Comment } from '../Comment/Comment.js'
 
-export default function Post(props){
+export default function Post(props) {
+  const dispatch = useDispatch()
+  const index = props.id;
+  const permalink = props.post.data.permalink
 
-  const commentStatus = useSelector(state => state.feed.showComments);
-  const dispatch = useDispatch();
-  // const { post, onToggleComments } = props;
+  const getPostComments = async (permalink) => {
+    try {
+      await fetch(`https://www.reddit.com/${permalink}.json`)
+        .then((response) => response.json())
+        .then(jsonResponse => {
+          console.log("comments", jsonResponse[1].data.children.map((comment) => comment.data))
+          const comments = jsonResponse[1].data.children.map((comment) => comment.data)
+          dispatch(setComments({ index, comments }))
+        })
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
-  const convertTimeStamp = (timestamp)=>{
-    const milliseconds = timestamp * 1000;
-    const dateObj = new Date(milliseconds);
-    return dateObj.toLocaleString('en-GB');
+  const fetchComments = (index, permalink) => async (dispatch) => {
+    try {
+      await getPostComments(permalink);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  const renderComments = () => {
-    if (props.post.showingComments) {
-      return (
-        <div>
-          {props.post.comments.map((comment) => (
-            <Comment comment={comment} key={comment.id} />
-          ))}
-        </div>
-      );
-    };
+  const onToggleComments = async () => {
+    console.log(index, permalink)
+    if (props.post.comments.length < 1) {
+      await dispatch(fetchComments(index, permalink));
+    }
+    dispatch(toggleShowingComments(index))
   };
 
   return (
     <article className="post">
-    <span className="author">Posted by {props.post.author} on {convertTimeStamp(props.post.created_utc)}</span>
-    <br/>
-      <a href={'https://www.reddit.com' + props.post.permalink} target="_blank">
-        <h3>{props.post.title}</h3>
+      <span className="author">Posted by {props.post.data.author} on {convertTimeStamp(props.post.data.created_utc)} {(props.post.data.over_18) ? <span id="NSFWTag">NSFW</span> : null} </span>
+      <br />
+      <a href={'https://www.reddit.com' + props.post.data.permalink} target="_blank">
+        <h3>{props.post.data.title}</h3>
       </a>
       <hr></hr>
-      {(props.post.thumbnail.length > 6) ? <img src={props.post.url} /> : <a>{props.post.thumbnail}</a>}
+      {(props.post.data.thumbnail.length > 6) ? <img src={props.post.data.url} /> : <a>{props.post.data.thumbnail}</a>}
+      <p>{props.post.data.selftext.replace(/\"/g, "")}</p>
+
       <hr></hr>
       <div className="postScore">
         <button>Up</button>
-        {props.post.score}
+        {props.post.data.score}
         <button>Down</button>
-        ({props.post.upvote_ratio * 100}% Upvoted)
+        {props.post.data.upvote_ratio * 100}% Upvoted
       </div>
-        <button type="button" onClick={() => props.populateComments(props.post.permalink)}>
-          Comments ({props.post.num_comments})
+      <button type="button" onClick={onToggleComments}>
+        Comments {props.post.data.num_comments}
+      </button>
 
-        </button>
-
-        <div>
-          {renderComments()}
-        </div>
+      <div>
+        {props.post.showingComments ? props.post.comments.map((comment) => <Comment key={comment.id} comment={comment} />) : null}
+      </div>
 
     </article>
   )
 }
+
+// onToggleComments={onToggleComments(index)
+// { props.post.showingComments ? props.post.comments.map((comment) => <Comment comment={comment} key={comment.id} />) : null }

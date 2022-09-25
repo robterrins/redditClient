@@ -18,6 +18,13 @@
   color: white;
 }
 
+#headerIcon {
+  height: 10vh;
+  width: auto;
+  border-radius: 100%;
+  background-color: black;
+}
+
 button {
   cursor: pointer;
 }
