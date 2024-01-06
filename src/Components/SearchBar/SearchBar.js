@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchTerm } from './SearchBarSlice.js'
-import { setSubreddit, setIcon } from '../Feed/FeedSlice.js';
+import { setSubreddit, setSubredditIcon, setPosts, setBannerColor, setBannerImg } from '../Feed/FeedSlice.js';
 import './SearchBar.css';
 
 export default function SearchBar() {
@@ -27,7 +27,7 @@ export default function SearchBar() {
       })
       .then(function (data) {
         if (data !== null) {
-          dispatch(setIcon(data.data.icon_img))
+          dispatch(setSubredditIcon(data.data.icon_img))
         }
       })
       .catch((error) => {

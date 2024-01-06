@@ -13,16 +13,18 @@
   margin: 0;
   height: 10vh;
   justify-content: center;
-  background-color: skyblue;
+  /* background-color: skyblue; */
   font-size: 50px;
   color: white;
 }
 
 #headerIcon {
   height: 10vh;
-  width: auto;
+  width: 10vh;
   border-radius: 100%;
-  background-color: black;
+  border: 1px solid black;
+  margin: 5px;
+  /* background-color: black; */
 }
 
 button {

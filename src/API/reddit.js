@@ -22,8 +22,11 @@ export const getPostComments = async (permalink) => {
 };
 
 export const getRandomSubreddit = async(subreddit) => {
-  // const response = await fetch(`${API_ROOT}/r/${subreddit}/random`);
-  const response = await fetch(`${API_ROOT}/r/random.json`);
+  // const response = await fetch(`${API_ROOT}/r/random.json`);
+  const response = await fetch(`api.reddit.com/r/random.json`);
+  console.log(response)
+  // const body = JSON.parse(response.body);
+  // console.log(body)
   const json = await response.json();
   console.log(json)
 }

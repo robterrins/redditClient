@@ -1,10 +1,10 @@
 import react from 'react'
 import './Sidebar.css'
-import {useSelector, useDispatch} from 'react-redux';
-import {removeFavouriteSubreddit} from './SidebarSlice.js'
+import { useSelector, useDispatch } from 'react-redux';
+import { removeFavouriteSubreddit } from './SidebarSlice.js'
 import { setSubreddit } from '../Feed/FeedSlice.js';
 
-export default function Sidebar () {
+export default function Sidebar() {
 
   const getFavouriteSubreddits = useSelector((state) => state.sidebar.favouriteSubreddits)
   const dispatch = useDispatch();
@@ -22,6 +22,12 @@ export default function Sidebar () {
 
   return (
     <div className="sidebar">
+
+      <button>New</button>
+      <button>Hot</button>
+      <button>Best</button>
+      <button>Top</button>
+      <button>Rising</button>
       <h3>Favourite Subreddits</h3>
       <hr></hr>
       <div className='subreddits'>

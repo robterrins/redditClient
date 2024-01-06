@@ -4,7 +4,7 @@ import { getSubredditPosts, getPostComments } from '../../API/reddit.js';
 const initialState = {
   posts: [],
   subreddit: 'pics',
-  icon: '"https://b.thumbs.redditmedia.com/VZX_KQLnI1DPhlEZ07bIcLzwR1Win808RIt7zm49VIQ.png'
+  icon: 'https://b.thumbs.redditmedia.com/VZX_KQLnI1DPhlEZ07bIcLzwR1Win808RIt7zm49VIQ.png'
 }
 
 export const feedSlice = createSlice({
@@ -17,8 +17,14 @@ export const feedSlice = createSlice({
     setSubreddit(state, action) {
       state.subreddit = action.payload;
     },
-    setIcon(state, action) {
+    setSubredditIcon(state, action) {
       state.icon = action.payload
+    },
+    setBannerColor(state, action){
+      state.bannerColor = action.payload
+    },
+    setBannerImg(state, action) {
+      state.bannerImg = action.payload
     },
     setComments(state, action) {
       state.posts[action.payload.index].comments = action.payload.comments;
@@ -33,7 +39,9 @@ export const feedSlice = createSlice({
 export const {
   setPosts,
   setSubreddit,
-  setIcon,
+  setSubredditIcon,
+  setBannerColor,
+  setBannerImg,
   setComments,
   toggleShowingComments
 } = feedSlice.actions;

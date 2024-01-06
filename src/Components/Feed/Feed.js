@@ -6,7 +6,7 @@ import './Feed.css';
 import Post from '../Post/Post.js';
 
 import { addFavouriteSubreddit } from '../Sidebar/SidebarSlice.js'
-import { setPosts } from "./FeedSlice.js"
+import { setSubredditIcon, setPosts, setBannerColor, setBannerImg } from "./FeedSlice.js"
 
 export default function Feed() {
   const dispatch = useDispatch();
@@ -14,8 +14,12 @@ export default function Feed() {
   const posts = useSelector((state) => state.feed.posts);
   const getSubredditList = useSelector((state) => state.sidebar.favouriteSubreddits);
   const icon = useSelector((state) => state.feed.icon);
+  const bannerColor = useSelector((state) => state.feed.bannerColor);
+  const bannerImg = useSelector((state) => state.feed.bannerImg)
 
   const generateFeed = () => {
+    console.log(icon)
+    dispatch(setSubredditIcon(icon))
     console.log(icon)
     fetch(`https://www.reddit.com/r/${currentSubreddit}.json`).then(res => {
       if (res.status !== 200) {
@@ -38,7 +42,60 @@ export default function Feed() {
         });
       }
     })
+    fetch(`https://www.reddit.com/r/${currentSubreddit}/about.json`).then(res => {
+      if (res.status !== 200) {
+        console.log(`${res.status} error!`)
+        return;
+      } else {
+        console.log(res)
+        res.json().then(data => {
+          if (data !== null) {
+            console.log(data)
+            console.log("Banner Color", data.data.banner_background_color)
+            console.log("Banner Image", data.data.banner_img)
+            dispatch(setBannerColor(data.data.banner_background_color))
+            dispatch(setSubredditIcon(data.data.icon_img))
+            if (data.data.banner_img !== "") {
+              dispatch(setBannerImg(data.data.banner_img))
+            } else {
+              dispatch(setBannerImg(""))
+            }
+          }
+        })
+      }
+    })
   }
+
+  // const generateFeed = () => {
+  //   console.log(icon)
+  //   // dispatch(setIcon(icon))
+
+  //   fetch(`https://www.reddit.com/r/${currentSubreddit}.json`)
+  //     .then(res => {
+  //       if (res.status !== 200) {
+  //         console.log(`${res.status} error!`)
+  //         return;
+  //       } else {
+  //         return res.json()
+  //       }
+  //     })
+  //     .then(data => {
+  //       if (data !== null) {
+  //         console.log(data)
+  //         const iconUrl = data[1]?.icon_img || '';
+  //         dispatch(setIcon(iconUrl));
+  //         const posts = data.data.children;
+  //         const postsWithMetadata = posts.map((post) => ({
+  //           ...post,
+  //           showingComments: false,
+  //           comments: [],
+  //           loadingComments: false,
+  //           errorComments: false,
+  //         }));
+  //         dispatch(setPosts(postsWithMetadata));
+  //       }
+  //     });
+  // }
 
   // const generateFeed = () => {
   //   Promise.all([
@@ -98,17 +155,12 @@ export default function Feed() {
 
   return (
     <div>
-      <div>
-        <img id="headerIcon" src={`${icon}`} alt=""></img><h2 className="subredditName"> r/{currentSubreddit}</h2>
-        <button type="button" onClick={onFavouriteClick}>Favourite</button>
+      <div style={{ backgroundColor: bannerColor, backgroundImage: `url("${bannerImg}")` }} >
+        <img id="headerIcon" src={icon} alt="" /><h2 className="subredditName"> r/{currentSubreddit}</h2>
+        <button type="button" >Prev</button>
+        <button type="button" onClick={onFavouriteClick}><a href="https://www.flaticon.com/free-icons/star" title="star icons">Star icons created by Maxim Basinski Premium - Flaticon</a>Favourite</button>
         <button type="button" onClick={onRandomClick}>Random</button>
-        <select>
-          <option>New</option>
-          <option>Hot</option>
-          <option>Best</option>
-          <option>Top</option>
-          <option>Rising</option>
-        </select>
+        <button type="button" >Next</button>
       </div>
       <div className="feed">
         <div className="posts">
