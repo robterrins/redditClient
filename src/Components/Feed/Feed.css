@@ -29,6 +29,8 @@
 
 button {
   cursor: pointer;
+  border-radius: 25px;
+  width: 5vw;
 }
 
 h3 {

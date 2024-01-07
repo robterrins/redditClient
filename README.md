@@ -13,6 +13,7 @@ loading animations
 header banner images?
 Dark/Light mode
 search suggestions
+make feed preview view and ability to click through to post
 
 ##Project Requirements:
     • Build the application using React and Redux

@@ -12,6 +12,8 @@ export const sidebarSlice = createSlice({
       state.favouriteSubreddits.push(action.payload);
     },
     removeFavouriteSubreddit(state, action){
+      console.log(state)
+      console.log(action.payload, 1)
       state.favouriteSubreddits.splice(action.payload, 1);
 
     },

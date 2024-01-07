@@ -6,6 +6,7 @@
 .searchButton {
   margin-left: 2vw;
   height: 3vh;
+  padding: 5px;
 }
 
 input {

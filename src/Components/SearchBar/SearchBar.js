@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchTerm } from './SearchBarSlice.js'
 import { setSubreddit, setSubredditIcon, setPosts, setBannerColor, setBannerImg } from '../Feed/FeedSlice.js';
+import { Search } from '@mui/icons-material';
 import './SearchBar.css';
 
 export default function SearchBar() {
@@ -44,7 +45,7 @@ export default function SearchBar() {
           value={searchTermInput}
           onChange={onSearchTermChange}
         />
-        <button className="searchButton" type="submit">Search</button>
+        <button className="searchButton" type="submit"><Search /></button>
       </form>
     </span>
   )
