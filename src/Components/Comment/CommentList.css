@@ -12,6 +12,9 @@
 
 
 .comment {
-  color: blue;
+  background-color: skyblue;
+  color: black;
   width: 100%;
+  margin: 10px;
+  text-align: left;
 }

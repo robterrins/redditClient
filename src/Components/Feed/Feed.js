@@ -24,7 +24,7 @@ export default function Feed() {
   const generateFeed = () => {
     fetch(`https://www.reddit.com/r/${currentSubreddit}.json`).then(res => {
       if (res.status !== 200) {
-        console.log(`${res.status} error!`)
+        console.error(`${res.status} error!`)
         return;
       } else {
         res.json().then(data => {
@@ -45,15 +45,12 @@ export default function Feed() {
     })
     fetch(`https://www.reddit.com/r/${currentSubreddit}/about.json`).then(res => {
       if (res.status !== 200) {
-        console.log(`${res.status} error!`)
+        console.error(`${res.status} error!`)
         return;
       } else {
-        console.log(res)
+        console.log("About Result", res)
         res.json().then(data => {
           if (data !== null) {
-            console.log(data)
-            console.log("Banner Color", data.data.banner_background_color)
-            console.log("Banner Image", data.data.banner_img)
             dispatch(setBannerColor(data.data.banner_background_color))
             dispatch(setSubredditIcon(data.data.icon_img))
             if (data.data.banner_img !== "") {
@@ -66,37 +63,6 @@ export default function Feed() {
       }
     })
   }
-
-  // const generateFeed = () => {
-  //   console.log(icon)
-  //   // dispatch(setIcon(icon))
-
-  //   fetch(`https://www.reddit.com/r/${currentSubreddit}.json`)
-  //     .then(res => {
-  //       if (res.status !== 200) {
-  //         console.log(`${res.status} error!`)
-  //         return;
-  //       } else {
-  //         return res.json()
-  //       }
-  //     })
-  //     .then(data => {
-  //       if (data !== null) {
-  //         console.log(data)
-  //         const iconUrl = data[1]?.icon_img || '';
-  //         dispatch(setIcon(iconUrl));
-  //         const posts = data.data.children;
-  //         const postsWithMetadata = posts.map((post) => ({
-  //           ...post,
-  //           showingComments: false,
-  //           comments: [],
-  //           loadingComments: false,
-  //           errorComments: false,
-  //         }));
-  //         dispatch(setPosts(postsWithMetadata));
-  //       }
-  //     });
-  // }
 
   // const generateFeed = () => {
   //   Promise.all([

@@ -1,10 +1,16 @@
 import {createSlice} from '@reduxjs/toolkit';
-import { getSubredditPosts, getPostComments } from '../../API/reddit.js';
 
 const initialState = {
   posts: [],
   subreddit: 'pics',
-  icon: 'https://b.thumbs.redditmedia.com/VZX_KQLnI1DPhlEZ07bIcLzwR1Win808RIt7zm49VIQ.png'
+  icon: 'https://b.thumbs.redditmedia.com/VZX_KQLnI1DPhlEZ07bIcLzwR1Win808RIt7zm49VIQ.png',
+  bannerColor: "#000000",
+  bannerImg: "",
+  comments: [],
+  showingComments: false,
+  pageNumber: 0,
+  before: "",
+  after: ""
 }
 
 export const feedSlice = createSlice({

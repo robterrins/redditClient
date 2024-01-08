@@ -13,7 +13,7 @@ export default function Post(props) {
   const dispatch = useDispatch()
   const index = props.id;
   const permalink = props.post.data.permalink
-  // console.log(props)
+  
   let imgID = ""
   let imgURL = ""
   let imgType = ""
@@ -39,21 +39,22 @@ export default function Post(props) {
     imgURL = props.post.data.url
   }
 
-  console.log(props.post.data.title)
-  console.log(imgID)
-  console.log(imgURL)
+  // console.log(props.post.data.title)
+  // console.log(imgID)
+  // console.log(imgURL)
 
   const getPostComments = async (permalink) => {
     try {
       await fetch(`https://www.reddit.com/${permalink}.json`)
         .then((response) => response.json())
         .then(jsonResponse => {
+          console.log(jsonResponse)
           console.log("comments", jsonResponse[1].data.children.map((comment) => comment.data))
           const comments = jsonResponse[1].data.children.map((comment) => comment.data)
           dispatch(setComments({ index, comments }))
         })
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   };
 
@@ -61,7 +62,7 @@ export default function Post(props) {
     try {
       await getPostComments(permalink);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
