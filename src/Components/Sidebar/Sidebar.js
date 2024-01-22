@@ -1,33 +1,38 @@
-import react from 'react';
-import './Sidebar.css'
+import React from 'react';
+import './Sidebar.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeFavouriteSubreddit } from './SidebarSlice.js'
+import { removeFavouriteSubreddit } from './SidebarSlice.js';
 import { setSubreddit } from '../Feed/FeedSlice.js';
 import TrendingUp from '@mui/icons-material/TrendingUp';
 import { Whatshot } from '@mui/icons-material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { NewReleases } from '@mui/icons-material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import RedditIcon from '../../assets/RedditIcon.png'
+import CloseIcon from '@mui/icons-material/Close';
+import RedditIcon from '../../assets/RedditIcon.png';
 
+const FavouriteSubreddit = ({ subreddit, onFavClick, onFavRemoveClick }) => (
+  <li key={subreddit.name}>
+    <img className="favouriteIcon" alt={subreddit.name} src={subreddit.icon} />
+    <a href="/" onClick={onFavClick}>r/{subreddit.name}</a>
+    <CloseIcon id={subreddit.name} className="removeFav" onClick={onFavRemoveClick} />
+  </li>
+);
 
-export default function Sidebar() {
-
-  const getFavouriteSubreddits = useSelector((state) => state.sidebar.favouriteSubreddits)
+const Sidebar = () => {
+  const favouriteSubreddits = useSelector((state) => state.sidebar.favouriteSubreddits);
   const dispatch = useDispatch();
 
   const onFavClick = (e) => {
     e.preventDefault();
-    dispatch(setSubreddit(e.target.innerHTML.slice(2)))
-  }
+    dispatch(setSubreddit(e.target.innerHTML.slice(2)));
+  };
 
   const onFavRemoveClick = (e) => {
-    e.preventDefault()
-    console.log(e.target)
-    console.log(e.target.id)
-    const index = getFavouriteSubreddits.indexOf(e.target.id);
-    return dispatch(removeFavouriteSubreddit(index));
-  }
+    e.preventDefault();
+    const index = favouriteSubreddits.findIndex((subreddit) => subreddit.name === e.target.id);
+    dispatch(removeFavouriteSubreddit(index));
+  };
 
   return (
     <div className="sidebar">
@@ -39,10 +44,20 @@ export default function Sidebar() {
       </div>
 
       <h3>Favourite Subreddits</h3>
-      <hr></hr>
+      <hr />
+
       <div className='subreddits'>
-        {getFavouriteSubreddits.map((subreddit, index) => <li key={index}><img className="favouriteIcon" alt="" src={subreddit.icon} /><a href="/" onClick={onFavClick} >r/{subreddit.name}</a> <DeleteForeverIcon id={subreddit.name} className="removeFav" onClick={onFavRemoveClick} /></li>)}
+        {favouriteSubreddits.map((subreddit) => (
+          <FavouriteSubreddit
+            key={subreddit.name}
+            subreddit={subreddit}
+            onFavClick={onFavClick}
+            onFavRemoveClick={onFavRemoveClick}
+          />
+        ))}
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default Sidebar;

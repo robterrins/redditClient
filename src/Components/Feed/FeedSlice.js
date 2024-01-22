@@ -39,6 +39,12 @@ export const feedSlice = createSlice({
       state.posts[action.payload].showingComments = !state.posts[action.payload]
         .showingComments;
     },
+    setBefore(state, action) {
+      state.before = action.payload
+    },
+    setAfter(state, action) {
+      state.after = action.payload
+    },
   },
 })
 
@@ -49,7 +55,9 @@ export const {
   setBannerColor,
   setBannerImg,
   setComments,
-  toggleShowingComments
+  toggleShowingComments,
+  setBefore,
+  setAfter
 } = feedSlice.actions;
 
 export default feedSlice.reducer;

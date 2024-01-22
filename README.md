@@ -2,8 +2,6 @@
 https://www.reddit.com/dev/api/
 
 ##To do:
-add favourite subreddit icons
-add delete bin icon
 embed videos + Gifs
 improve styling
 add local storage
@@ -14,6 +12,8 @@ header banner images?
 Dark/Light mode
 search suggestions
 make feed preview view and ability to click through to post
+Recursively get comment threads
+Tests
 
 ##Project Requirements:
     • Build the application using React and Redux

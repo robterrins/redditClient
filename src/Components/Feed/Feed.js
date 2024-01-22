@@ -1,121 +1,79 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { getRandomSubreddit } from '../../API/reddit.js';
-
 import './Feed.css';
 import Post from '../Post/Post.js';
+import { addFavouriteSubreddit } from '../Sidebar/SidebarSlice.js';
+import { setSubredditIcon, setPosts, setBannerColor, setBannerImg, setBefore, setAfter } from "./FeedSlice.js";
+import { ArrowForwardIos, ArrowBackIos, Star } from '@mui/icons-material';
+import RedditIcon from "../../assets/RedditIcon.png";
 
-import { addFavouriteSubreddit } from '../Sidebar/SidebarSlice.js'
-import { setSubredditIcon, setPosts, setBannerColor, setBannerImg } from "./FeedSlice.js"
-
-import { ArrowForwardIos } from '@mui/icons-material';
-import { ArrowBackIos } from '@mui/icons-material';
-import Star from '@mui/icons-material/Star'
-
-export default function Feed() {
+const Feed = () => {
   const dispatch = useDispatch();
   const currentSubreddit = useSelector((state) => state.feed.subreddit);
   const posts = useSelector((state) => state.feed.posts);
   const getSubredditList = useSelector((state) => state.sidebar.favouriteSubreddits);
   const icon = useSelector((state) => state.feed.icon);
   const bannerColor = useSelector((state) => state.feed.bannerColor);
-  const bannerImg = useSelector((state) => state.feed.bannerImg)
+  const bannerImg = useSelector((state) => state.feed.bannerImg);
+  const beforeLink = useSelector((state) => state.feed.before);
+  const afterLink = useSelector((state) => state.feed.after);
 
-  const generateFeed = () => {
-    fetch(`https://www.reddit.com/r/${currentSubreddit}.json`).then(res => {
-      if (res.status !== 200) {
-        console.error(`${res.status} error!`)
-        return;
-      } else {
-        res.json().then(data => {
-          if (data !== null) {
-            console.log("Subreddit Data", data)
-            const posts = data.data.children;
-            const postsWithMetadata = posts.map((post) => ({
-              ...post,
-              showingComments: false,
-              comments: [],
-              loadingComments: false,
-              errorComments: false,
-            }));
-            dispatch(setPosts(postsWithMetadata));
-          }
-        });
-      }
-    })
-    fetch(`https://www.reddit.com/r/${currentSubreddit}/about.json`).then(res => {
-      if (res.status !== 200) {
-        console.error(`${res.status} error!`)
-        return;
-      } else {
-        console.log("About Result", res)
-        res.json().then(data => {
-          if (data !== null) {
-            dispatch(setBannerColor(data.data.banner_background_color))
-            console.log(data.data)
-            dispatch(setSubredditIcon(data.data.icon_img))
-            if (data.data.banner_img !== "") {
-              dispatch(setBannerImg(data.data.banner_img))
-            } else {
-              dispatch(setBannerImg(""))
-            }
-          }
-        })
-      }
-    })
-  }
+  const fetchPosts = () => {
+    fetch(`https://www.reddit.com/r/${currentSubreddit}.json`)
+      .then(handleResponse)
+      .then(data => {
+        if (data !== null) {
+          console.log("Posts: ", data)
+          const posts = data.data.children.map(post => ({
+            ...post,
+            showingComments: false,
+            comments: [],
+            loadingComments: false,
+            errorComments: false,
+          }));
+          dispatch(setPosts(posts));
+          dispatch(setBefore(data.data.before))
+          dispatch(setAfter(data.data.after))
+        }
+      })
+      .catch(error => console.error("Error fetching posts:", error));
+  };
 
-  // const generateFeed = () => {
-  //   Promise.all([
-  //   fetch(`https://www.reddit.com/r/${currentSubreddit}.json`),
-  //     fetch(`https://www.reddit.com/r/${currentSubreddit}/about.json`)
-  //   ])
-  //   .then(responses => {
-  //     return Promise.all(responses.map(function (response) {
-  //     return response.json()
-  //     }))
-  //     .then(function(data){
-  //       console.log("data")
-  //       console.log("link", data[1])
-  //       if(data[1] !== null){
-  //         icon = data[1].icon_img
-  //       }
-  //       if (data[0] !== null) {
-  //         console.log(data[0])
-  //         const posts = data[0].data.children;
-  //         const postsWithMetadata = posts.map((post) => ({
-  //           ...post,
-  //           showingComments: false,
-  //           comments: [],
-  //           loadingComments: false,
-  //           errorComments: false,
-  //         }));
-  //         dispatch(setPosts(postsWithMetadata));
-  //       }
-  //     })
-  //     .catch(function(error) {
-  //       console.log(error)
-  //     })
-  //     // if (res.status !== 200) {
-  //     //   console.log(`${res.status} error!`)
-  //     //   return;
-  //     // }
+  const fetchSubredditInfo = () => {
+    fetch(`https://www.reddit.com/r/${currentSubreddit}/about.json`)
+      .then(handleResponse)
+      .then(data => {
+        // console.log("Subreddit Info: ", data)
+        if (data !== null) {
+          dispatch(setBannerColor(data.data.banner_background_color))
+          dispatch(setSubredditIcon(data.data.icon_img || RedditIcon));
+          dispatch(setBannerImg(data.data.banner_img || ""));
+        }
+      })
+      .catch(error => console.error("Error fetching subreddit info:", error));
+  };
 
-  //   })
-  // }
+  const handleResponse = (response) => {
+    if (!response.ok) {
+      throw new Error(`${response.status} error!`);
+    }
+    return response.json();
+  };
 
   useEffect(() => {
-    generateFeed()
+    fetchPosts();
+    fetchSubredditInfo();
   }, [currentSubreddit, icon]);
 
   const onFavouriteClick = (e) => {
     e.preventDefault();
-    // if (getSubredditList.includes(currentSubreddit)) {
-    if (getSubredditList.some(x => x.name === currentSubreddit)) {
-      return
-    } else {
-      dispatch(addFavouriteSubreddit({name: currentSubreddit, icon: icon}));
+    if (!getSubredditList.some(x => x.name === currentSubreddit)) {
+      dispatch(addFavouriteSubreddit({ name: currentSubreddit, icon: icon }));
     }
+  };
+
+  const onNextClick = () => {
+    console.log(afterLink)
   }
 
   // const onRandomClick = (e) => {
@@ -124,19 +82,20 @@ export default function Feed() {
 
   return (
     <div>
-      <div style={{ backgroundColor: bannerColor, backgroundImage: `url("${bannerImg}")` }} >
-        <img id="headerIcon" src={icon} alt="" /><h2 className="subredditName"> r/{currentSubreddit}</h2>
-
+      <div className="header" style={{ backgroundColor: bannerColor, backgroundImage: `url("${bannerImg}")` }}>
+        <img id="headerIcon" src={icon} alt="" />
+        <h2 className="subredditName"> r/{currentSubreddit}</h2>
         <button type="button" ><ArrowBackIos /></button>
         <button type="button" onClick={onFavouriteClick}><Star /></button>
-        {/* <button type="button" onClick={onRandomClick}>Random</button> */}
-        <button type="button" ><ArrowForwardIos /></button>
+        <button type="button" onClick={onNextClick}><ArrowForwardIos /></button>
       </div>
       <div className="feed">
         <div className="posts">
-          {(posts != null) ? posts.map((post, index) => <Post key={index} id={index} post={post} />) : ''}
+          {posts && posts.map((post, index) => <Post key={index} id={index} post={post} />)}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default Feed;
