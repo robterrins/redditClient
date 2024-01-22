@@ -4,7 +4,7 @@ import './Header.css';
 import SearchBar from '../SearchBar/SearchBar.js'
 import SortOptions from '../SortOptions/SortOptions.js'
 
-import redditLogo from './Reddit-Logo-700x394.png'
+import redditLogo from '../../assets/Reddit-Logo-700x394.png'
 
 export default function Header () {
   const [searchTerm, setSearchTerm] = useState("")

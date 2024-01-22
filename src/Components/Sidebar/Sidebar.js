@@ -8,6 +8,7 @@ import { Whatshot } from '@mui/icons-material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { NewReleases } from '@mui/icons-material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import RedditIcon from '../../assets/RedditIcon.png'
 
 
 export default function Sidebar() {
@@ -40,7 +41,7 @@ export default function Sidebar() {
       <h3>Favourite Subreddits</h3>
       <hr></hr>
       <div className='subreddits'>
-        {getFavouriteSubreddits.map((subreddit, index) => <li key={index}><img className="favoriteIcon" alt="" /><a href="/" onClick={onFavClick} >r/{subreddit}</a> <DeleteForeverIcon id={subreddit} className="removeFav" onClick={onFavRemoveClick} /></li>)}
+        {getFavouriteSubreddits.map((subreddit, index) => <li key={index}><img className="favouriteIcon" alt="" src={subreddit.icon} /><a href="/" onClick={onFavClick} >r/{subreddit.name}</a> <DeleteForeverIcon id={subreddit.name} className="removeFav" onClick={onFavRemoveClick} /></li>)}
       </div>
     </div>
   )

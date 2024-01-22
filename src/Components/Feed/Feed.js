@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRandomSubreddit } from '../../API/reddit.js';
+// import { getRandomSubreddit } from '../../API/reddit.js';
 
 import './Feed.css';
 import Post from '../Post/Post.js';
@@ -52,6 +52,7 @@ export default function Feed() {
         res.json().then(data => {
           if (data !== null) {
             dispatch(setBannerColor(data.data.banner_background_color))
+            console.log(data.data)
             dispatch(setSubredditIcon(data.data.icon_img))
             if (data.data.banner_img !== "") {
               dispatch(setBannerImg(data.data.banner_img))
@@ -109,16 +110,17 @@ export default function Feed() {
 
   const onFavouriteClick = (e) => {
     e.preventDefault();
-    if (getSubredditList.includes(currentSubreddit)) {
+    // if (getSubredditList.includes(currentSubreddit)) {
+    if (getSubredditList.some(x => x.name === currentSubreddit)) {
       return
     } else {
-      dispatch(addFavouriteSubreddit(currentSubreddit));
+      dispatch(addFavouriteSubreddit({name: currentSubreddit, icon: icon}));
     }
   }
 
-  const onRandomClick = (e) => {
-    getRandomSubreddit(currentSubreddit)
-  }
+  // const onRandomClick = (e) => {
+  //   getRandomSubreddit(currentSubreddit)
+  // }
 
   return (
     <div>

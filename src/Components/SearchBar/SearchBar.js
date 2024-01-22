@@ -10,19 +10,29 @@ export default function SearchBar() {
   const getSearchTermState = useSelector((state) => state.feed.subreddit);
   const dispatch = useDispatch();
 
-  const onSearchTermChange = (e) => {
+  const onSearchTermChange = async (e) => {
     e.preventDefault();
     setSearchTermInput(e.target.value);
+
+    await fetch(`https://www.reddit.com/search_reddit_names?query=${searchTermInput}&type=sr`)
+      .then(res => {
+        console.log("search")
+        return res.json()
+      })
+      .then((data)=> {
+        console.log(data)
+      })
+
   }
 
   useEffect(() => {
     setSubreddit(searchTermInput);
   }, [getSearchTermState]);
 
-  const onSearchTermSubmit = (e) => {
+  const onSearchTermSubmit = async (e) => {
     e.preventDefault();
     dispatch(setSubreddit(searchTermInput))
-    fetch(`https://www.reddit.com/r/${searchTermInput}/about.json`)
+    await fetch(`https://www.reddit.com/r/${searchTermInput}/about.json`)
       .then(res => {
         return res.json()
       })
