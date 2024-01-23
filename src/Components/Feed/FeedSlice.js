@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   posts: [],
@@ -17,7 +17,7 @@ export const feedSlice = createSlice({
   name: 'feedSlice',
   initialState,
   reducers: {
-    setPosts(state,action){
+    setPosts(state, action) {
       state.posts = action.payload;
     },
     setSubreddit(state, action) {
@@ -26,7 +26,7 @@ export const feedSlice = createSlice({
     setSubredditIcon(state, action) {
       state.icon = action.payload
     },
-    setBannerColor(state, action){
+    setBannerColor(state, action) {
       state.bannerColor = action.payload
     },
     setBannerImg(state, action) {
@@ -36,8 +36,7 @@ export const feedSlice = createSlice({
       state.posts[action.payload.index].comments = action.payload.comments;
     },
     toggleShowingComments(state, action) {
-      state.posts[action.payload].showingComments = !state.posts[action.payload]
-        .showingComments;
+      state.posts[action.payload].showingComments = !state.posts[action.payload].showingComments;
     },
     setBefore(state, action) {
       state.before = action.payload

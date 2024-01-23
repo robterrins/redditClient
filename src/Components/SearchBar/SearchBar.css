@@ -15,3 +15,9 @@ input {
   height: 3vh;
   width: 40vw;
 }
+
+.searchResultsIcon {
+  height: 3vh;
+  width: 3vh;
+  border-radius: 25%;
+}

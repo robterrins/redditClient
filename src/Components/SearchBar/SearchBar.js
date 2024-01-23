@@ -3,26 +3,34 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSearchTerm } from './SearchBarSlice.js'
 import { setSubreddit, setSubredditIcon, setPosts, setBannerColor, setBannerImg } from '../Feed/FeedSlice.js';
 import { Search } from '@mui/icons-material';
+import RedditIcon from '../../assets/RedditIcon.png'
 import './SearchBar.css';
 
 export default function SearchBar() {
   const [searchTermInput, setSearchTermInput] = useState("");
+  const [searchResults, setSearchResults] = useState([])
   const getSearchTermState = useSelector((state) => state.feed.subreddit);
   const dispatch = useDispatch();
 
   const onSearchTermChange = async (e) => {
     e.preventDefault();
     setSearchTermInput(e.target.value);
-
-    await fetch(`https://www.reddit.com/search_reddit_names?query=${searchTermInput}&type=sr`)
-      .then(res => {
-        console.log("search")
-        return res.json()
-      })
-      .then((data)=> {
-        console.log(data)
-      })
-
+    // if(searchTermInput.length < 2){
+    //   setSearchResults([])
+    // }
+    const response = await fetch(`https://www.reddit.com/api/subreddit_autocomplete_v2.json?query=${searchTermInput}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    const listings = data.data.children.map((listing) => {
+      console.log(listing)
+      return {
+        displayName: listing.data.display_name_prefixed || `${listing.data.display_name}`,
+        iconImg: listing.data.icon_img || RedditIcon
+      }
+    })
+    setSearchResults(listings)
   }
 
   useEffect(() => {
@@ -43,7 +51,7 @@ export default function SearchBar() {
       })
       .catch((error) => {
         console.log(error)
-      } )
+      })
   }
 
   return (
@@ -57,6 +65,20 @@ export default function SearchBar() {
         />
         <button className="searchButton" type="submit"><Search /></button>
       </form>
+      {searchResults.length > 0 && (
+        <ul className="searchResults">
+          {searchResults.map((result, index) => (
+            // <li key={index}>{result.displayName}</li>
+
+            <li key={index}>
+              {/* <a href={`/r/${listing.data.display_name_prefixed}`} target="_blank" rel="noopener noreferrer"> */}
+                <img className="searchResultsIcon" src={result.iconImg} alt={`${result.displayName} Subreddit Icon`} />
+                {result.displayName}
+              {/* </a> */}
+            </li>
+          ))}
+        </ul>
+      )}
     </span>
   )
 }
