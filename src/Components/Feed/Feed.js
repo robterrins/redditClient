@@ -73,7 +73,26 @@ const Feed = () => {
   };
 
   const onNextClick = () => {
+    "https://www.reddit.com/r/popular/hot.json?after=t3_19enmum&count=25"
     console.log(afterLink)
+    fetch(`https://www.reddit.com/r/${currentSubreddit}.json?after=${afterLink}&count=25`)
+      .then(handleResponse)
+      .then(data => {
+        console.log(data)
+        if (data !== null) {
+          console.log("Posts: ", data)
+          const posts = data.data.children.map(post => ({
+            ...post,
+            showingComments: false,
+            comments: [],
+            loadingComments: false,
+            errorComments: false,
+          }));
+          dispatch(setPosts(posts));
+          dispatch(setBefore(data.data.before))
+          dispatch(setAfter(data.data.after))
+        }
+      })
   }
 
   // const onRandomClick = (e) => {
