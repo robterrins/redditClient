@@ -73,7 +73,7 @@ const Feed = () => {
   };
 
   const onNextClick = () => {
-    "https://www.reddit.com/r/popular/hot.json?after=t3_19enmum&count=25"
+    // "https://www.reddit.com/r/popular/hot.json?after=t3_19enmum&count=25"
     console.log(afterLink)
     fetch(`https://www.reddit.com/r/${currentSubreddit}.json?after=${afterLink}&count=25`)
       .then(handleResponse)
@@ -95,7 +95,30 @@ const Feed = () => {
       })
   }
 
+  const onPrevClick = () => {
+    console.log(beforeLink)
+    fetch(`https://www.reddit.com/r/${currentSubreddit}.json?before=${beforeLink}&count=25`)
+      .then(handleResponse)
+      .then(data => {
+        console.log(data)
+        if (data !== null) {
+          console.log("Posts: ", data)
+          const posts = data.data.children.map(post => ({
+            ...post,
+            showingComments: false,
+            comments: [],
+            loadingComments: false,
+            errorComments: false,
+          }));
+          dispatch(setPosts(posts));
+          dispatch(setBefore(data.data.before))
+          dispatch(setAfter(data.data.after))
+        }
+      })
+  }
+
   // const onRandomClick = (e) => {
+  // "https://www.reddit.com/r/random.json"
   //   getRandomSubreddit(currentSubreddit)
   // }
 
@@ -104,7 +127,7 @@ const Feed = () => {
       <div className="header" style={{ backgroundColor: bannerColor, backgroundImage: `url("${bannerImg}")` }}>
         <img id="headerIcon" src={icon} alt="" />
         <h2 className="subredditName"> r/{currentSubreddit}</h2>
-        <button type="button" ><ArrowBackIos /></button>
+        <button type="button" onClick={onPrevClick}><ArrowBackIos /></button>
         <button type="button" onClick={onFavouriteClick}><Star /></button>
         <button type="button" onClick={onNextClick}><ArrowForwardIos /></button>
       </div>
